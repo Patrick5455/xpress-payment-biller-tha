@@ -1,6 +1,6 @@
 
 
-package com.xpresspayment.takehometest.common.dto.auth;
+package com.xpresspayment.takehometest.common.dto.auth.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,5 +13,4 @@ import lombok.With;
 public class SignUpResponse {
     private String token;
     private String email;
-    private String account_type;
 }

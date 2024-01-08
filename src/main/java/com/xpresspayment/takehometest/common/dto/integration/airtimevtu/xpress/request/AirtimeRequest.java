@@ -1,4 +1,4 @@
-package com.xpresspayment.takehometest.common.dto.integration.airtimevtu;
+package com.xpresspayment.takehometest.common.dto.integration.airtimevtu.xpress.request;
 
 import javax.validation.constraints.NotBlank;
 

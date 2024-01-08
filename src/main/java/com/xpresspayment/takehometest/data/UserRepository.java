@@ -1,4 +1,4 @@
-package com.xpresspayment.takehometest;
+package com.xpresspayment.takehometest.data;
 
 import java.util.Optional;
 

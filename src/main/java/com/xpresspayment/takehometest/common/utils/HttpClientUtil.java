@@ -1,8 +1,9 @@
 
 
-package com.xpresspayment.takehometest.web.utils;
+package com.xpresspayment.takehometest.common.utils;
 
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.xpresspayment.takehometest.common.exceptions.AppException;
 import com.xpresspayment.takehometest.common.exceptions.HttpCallException;
-import com.xpresspayment.takehometest.common.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -33,7 +34,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HttpClientUtil {
 
-    public static <T> T singleClassGet(
+    public <T> T singleClassGet(
             String url, Map<String, String> reqHeaders,
             Map<String, String> params, Class<T> cls) throws HttpCallException {
         HttpGet request = new HttpGet(url);
@@ -43,7 +44,7 @@ public class HttpClientUtil {
         return executeRequest(request, cls);
     }
 
-    public static CloseableHttpResponse singleClassGetResponse(
+    public CloseableHttpResponse singleClassGetResponse(
             String url, Map<String, String> reqHeaders,
             Map<String, String> params) throws HttpCallException {
         HttpGet request = new HttpGet(url);
@@ -53,7 +54,7 @@ public class HttpClientUtil {
         return executeRequestForHttpResponse(request);
     }
 
-    public static <T> T singleClassPost(
+    public <T> T singleClassPost(
             String url, Map<String, String> reqHeaders,
             Map<String, String> params,
             UrlEncodedFormEntity parameters, Class<T> cls) throws Exception {
@@ -65,7 +66,7 @@ public class HttpClientUtil {
         return executeRequest(request, cls);
     }
 
-    public static <T> T singleClassPost(
+    public <T> T singleClassPost(
             String url, Map<String, String> reqHeaders,
             Map<String, String> params,
             String json, Class<T> cls) throws HttpCallException {
@@ -83,7 +84,7 @@ public class HttpClientUtil {
     }
 
 
-    public static <T> T singleClassPostForm(String url, Map<String, String> reqHeaders,
+    public <T> T singleClassPostForm(String url, Map<String, String> reqHeaders,
                                             Map<String, String> params,
                                             Map<String, String> formValues, Class<T> cls) throws HttpCallException {
         HttpPost request = new HttpPost(url);
@@ -107,16 +108,16 @@ public class HttpClientUtil {
 
 
 
-    private static void throwOnError (CloseableHttpResponse response) throws HttpCallException {
+    private void throwOnError (CloseableHttpResponse response) throws HttpCallException {
         String statusCode = String.valueOf(response.getStatusLine().getStatusCode());
         if  (statusCode.startsWith("4") || statusCode.startsWith("5")) {
-            log.error("something went wrong while making http call {}", response.getStatusLine());
+            log.error("something went wrong while making http call >>> {}", response.getStatusLine());
             throw new HttpCallException(response.getStatusLine().getStatusCode(),
                     response.getStatusLine().getReasonPhrase());
         }
     }
 
-    private static void addRequestsParams(Map<String, String> requestParams,
+    private void addRequestsParams(Map<String, String> requestParams,
                                           HttpRequestBase request) throws HttpCallException {
         if (requestParams != null && !requestParams.isEmpty()) {
             log.info("setting request params: {}", requestParams);
@@ -131,7 +132,7 @@ public class HttpClientUtil {
         }
     }
 
-    private static void addRequestHeaders(Map<String, String> requestHeaders,
+    private void addRequestHeaders(Map<String, String> requestHeaders,
                                           HttpRequestBase request) {
         request.addHeader(HttpHeaders.ACCEPT, Constants.APPLICATION_JSON);
         request.addHeader(HttpHeaders.CONTENT_TYPE, Constants.APPLICATION_JSON);
@@ -141,7 +142,7 @@ public class HttpClientUtil {
             }
         }
     }
-    private static CloseableHttpResponse executeRequestForHttpResponse(HttpRequestBase request) throws HttpCallException {
+    private CloseableHttpResponse executeRequestForHttpResponse(HttpRequestBase request) throws HttpCallException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
@@ -155,21 +156,25 @@ public class HttpClientUtil {
         }
     }
 
-    private static <T> T executeRequest(HttpRequestBase request, Class<T> cls) throws HttpCallException {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        T results = null;
-        try (CloseableHttpResponse response = httpClient.execute(request)) {
-            HttpEntity entity = response.getEntity();
-            log.info("http POST response: {}", entity);
-            if (entity != null) {
-                // return it as a custom class type
-                results = new Gson().fromJson(EntityUtils.toString(entity), cls);
+    private <T> T executeRequest(HttpRequestBase request, Class<T> cls) throws HttpCallException {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            T results = null;
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                HttpEntity entity = response.getEntity();
+                log.info("http POST response: {}", entity);
+                if (entity != null) {
+                    // return it as a custom class type
+                    results = new Gson().fromJson(EntityUtils.toString(entity), cls);
+                }
+                throwOnError(response);
+                return results;
+            } catch (Exception e) {
+                log.error("something went wrong while making post request ", e);
+                throw new HttpCallException("something went wrong while making post request", e);
             }
-            throwOnError(response);
-            return results;
-        } catch (Exception e) {
-            log.error("something went wrong while making post request ", e);
-            throw new HttpCallException("something went wrong while making post request", e);
+        } catch (IOException e) {
+            log.error("something went wrong while executing http request:", e);
+            throw new AppException("something went wrong while executing http request", e);
         }
 
     }

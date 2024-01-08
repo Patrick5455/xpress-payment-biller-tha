@@ -1,4 +1,4 @@
-package com.xpresspayment.takehometest.commons.configs.sms;
+package com.xpresspayment.takehometest.common.configs.sms;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

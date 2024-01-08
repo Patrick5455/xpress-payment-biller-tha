@@ -1,5 +1,5 @@
 
-package com.xpresspayment.takehometest.middleware.security.services;
+package com.xpresspayment.takehometest.security.services;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -9,15 +9,15 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import com.xpresspayment.takehometest.commons.enumconstants.Role;
-import com.xpresspayment.takehometest.commons.exceptions.InvalidTokenException;
-import com.xpresspayment.takehometest.commons.utils.GlobalUtils;
-import com.xpresspayment.takehometest.commons.utils.i.CachingService;
-import com.xpresspayment.takehometest.middleware.security.constants.SecurityConstants;
-import com.xpresspayment.takehometest.middleware.security.models.AttributeValue;
-import com.xpresspayment.takehometest.middleware.security.models.AuthOwnerDetails;
-import com.xpresspayment.takehometest.middleware.security.models.UserPrincipal;
-import com.xpresspayment.takehometest.middleware.security.services.i.AuthenticationService;
+import com.xpresspayment.takehometest.common.enumconstants.Role;
+import com.xpresspayment.takehometest.common.exceptions.InvalidTokenException;
+import com.xpresspayment.takehometest.common.utils.GlobalUtils;
+import com.xpresspayment.takehometest.common.utils.i.CachingService;
+import com.xpresspayment.takehometest.security.constants.SecurityConstants;
+import com.xpresspayment.takehometest.security.models.AttributeValue;
+import com.xpresspayment.takehometest.security.models.AuthOwnerDetails;
+import com.xpresspayment.takehometest.security.models.UserPrincipal;
+import com.xpresspayment.takehometest.security.services.i.AuthenticationService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -38,6 +38,7 @@ public class JwtService extends SecurityConstants implements AuthenticationServi
 
     @Override
     public String createAuthenticationToken(Authentication authentication) {
+        log.info("creating auth token");
         return createAuthenticationToken(
                 (UserPrincipal) authentication.getPrincipal());
     }
@@ -83,14 +84,6 @@ public class JwtService extends SecurityConstants implements AuthenticationServi
                 .authExpiredAt(toLocalDateTime(
                         getClaim(authToken, Claims::getExpiration)))
                 .build();
-    }
-
-    public AuthOwnerDetails withRole(String authToken, AuthOwnerDetails authOwnerDetails){
-       return authOwnerDetails.withUserRole(
-                (Role) Objects.requireNonNull(extractAllClaims(authToken))
-                .getOrDefault(
-                        AttributeValue.ROLE.name(), null)
-                );
     }
 
     private static Date setExpiration(){

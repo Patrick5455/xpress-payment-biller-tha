@@ -1,4 +1,4 @@
-package com.xpresspayment.takehometest.commons.dto.web.response;
+package com.xpresspayment.takehometest.common.dto.web.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

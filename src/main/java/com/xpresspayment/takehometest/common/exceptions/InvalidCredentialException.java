@@ -1,9 +1,9 @@
 
 
-package com.xpresspayment.takehometest.commons.exceptions;
+package com.xpresspayment.takehometest.common.exceptions;
 
 
-import com.xpresspayment.takehometest.commons.enumconstants.HttpStatusCode;
+import com.xpresspayment.takehometest.common.enumconstants.HttpStatusCode;
 
 public class InvalidCredentialException  extends AppException{
 

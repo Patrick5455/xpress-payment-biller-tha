@@ -1,25 +1,29 @@
 
 
-package com.xpresspayment.takehometest.middleware.security.configs;
+package com.xpresspayment.takehometest.security.configs;
 
-import com.xpresspayment.takehometest.middleware.security.services.RestAuthenticationEntryPoint;
-import com.xpresspayment.takehometest.middleware.security.services.i.IUserService;
+import com.xpresspayment.takehometest.security.services.RestAuthenticationEntryPoint;
+import com.xpresspayment.takehometest.security.services.i.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
-public class WebSecurityConfig  {
+public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 
     private final IUserService userService;
     private final AuthorizationFilter authorizationFilter;
@@ -34,70 +38,46 @@ public class WebSecurityConfig  {
         this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authZ) -> authZ
-                        .anyRequest().authenticated()
-                );
+    @Override
+    public void configure(HttpSecurity httpSecurity) throws Exception{
+        httpSecurity
+                .cors().disable()
+                .csrf().disable()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
-        http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.authorizeRequests()
+                .antMatchers(
+                        HttpMethod.POST,
+                        "/v1/sessions/sign-up",
+                        "/v1/sessions/login",
+                        "/v1/account/activate/*",
+                        "/v1/account/verify/resend/email",
+                        "/v1/account/settings/password/reset-token",
+                        "/v1/account/settings/password/reset",
+                        "/authenticate",
+                        "/swagger-resources/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs",
+                        "/api-docs",
+                        "/webjars/**"
+                ).permitAll();
 
-        return http.build();
+        httpSecurity.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//    }
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService)
+                .passwordEncoder(passwordEncoder());
+    }
 
-
-//    @Override
-//    public void configure(HttpSecurity httpSecurity) throws Exception{
-//        httpSecurity
-//                .cors().disable()
-//                .csrf().disable()
-//                .formLogin().disable()
-//                .httpBasic().disable()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(authenticationEntryPoint)
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.NEVER);
-//
-//        httpSecurity.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        httpSecurity.authorizeRequests()
-//                .antMatchers(
-//                        HttpMethod.POST,
-//                        "/v1/sessions/sign-up",
-//                        "/v1/sessions/beta-notify",
-//                        "/v1/sessions/login",
-//                        "/v1/account/activate/*",
-//                        "/v1/account/verify/phone/*",
-//                        "/v1/account/verify/resend/phone",
-//                        "/v1/account/verify/resend/email",
-//                        "/v1/account/settings/password/reset-token",
-//                        "/v1/account/settings/password/reset",
-//                        "/v1/onboarding/investor/interest",
-//                        "/authenticate",
-//                        "/swagger-resources/**",
-//                        "/swagger-ui/**",
-//                        "/swagger-ui.html",
-//                        "/v3/api-docs",
-//                        "/webjars/**",
-//                        "/v1/virtual-account/event/**",
-//                        "/v1/onboarding/business/beta"
-//                ).permitAll();
-//        httpSecurity.authorizeRequests()
-//                .antMatchers(  HttpMethod.GET,
-//                        "/v1/accounts/invite/fetch/**",
-//                        "/v1/onboarding/business/beta/**").permitAll();
-//    }
-//
-////    @Override
-////    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-////        auth.userDetailsService(userService);
-////    }
 
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint(){
@@ -109,11 +89,11 @@ public class WebSecurityConfig  {
         return new BCryptPasswordEncoder();
     }
 
-//    @Override
-//    @Bean
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Configuration
     @EnableWebMvc

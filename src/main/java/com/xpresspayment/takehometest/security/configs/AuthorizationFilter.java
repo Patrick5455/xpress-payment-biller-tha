@@ -1,21 +1,22 @@
 
-package com.xpresspayment.takehometest.middleware.security.configs;
+package com.xpresspayment.takehometest.security.configs;
 
 import java.io.IOException;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.google.gson.Gson;
-import com.xpresspayment.takehometest.commons.dto.web.response.ApiResponse;
-import com.xpresspayment.takehometest.commons.enumconstants.HttpStatusCode;
-import com.xpresspayment.takehometest.commons.exceptions.InvalidTokenException;
-import com.xpresspayment.takehometest.commons.utils.i.CachingService;
-import com.xpresspayment.takehometest.middleware.security.models.AuthOwnerDetails;
-import com.xpresspayment.takehometest.middleware.security.models.UserPrincipal;
-import com.xpresspayment.takehometest.middleware.security.services.i.AuthenticationService;
-import com.xpresspayment.takehometest.middleware.security.services.i.IUserService;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.xpresspayment.takehometest.common.dto.web.response.ApiResponse;
+import com.xpresspayment.takehometest.common.enumconstants.HttpStatusCode;
+import com.xpresspayment.takehometest.common.exceptions.InvalidTokenException;
+import com.xpresspayment.takehometest.common.utils.i.CachingService;
+import com.xpresspayment.takehometest.security.models.AuthOwnerDetails;
+import com.xpresspayment.takehometest.security.models.UserPrincipal;
+import com.xpresspayment.takehometest.security.services.i.AuthenticationService;
+import com.xpresspayment.takehometest.security.services.i.IUserService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,7 +28,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import static com.xpresspayment.takehometest.middleware.security.constants.SecurityConstants.*;
+import static com.xpresspayment.takehometest.security.constants.SecurityConstants.*;
 
 
 @Component
@@ -52,7 +53,6 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse httpServletResponse,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException, InvalidTokenException {
-
         String authorizationScheme = httpServletRequest.getHeader(AUTH_HEADER_KEY);
         String authToken;
         AuthOwnerDetails authOwnerDetails = null;
@@ -76,12 +76,12 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                  }
              }
              try {
-                 doAuthorizeUser(authOwnerDetails, httpServletRequest, authToken);
+                doAuthorizeUser(authOwnerDetails, httpServletRequest, authToken);
              } catch (Exception e) {
-                 httpServletResponse.addHeader("Content-Type", "application/json");
-                 if (e instanceof InvalidTokenException) {
-                     httpServletResponse.setStatus(440);
-                     httpServletResponse.getWriter().write(
+                httpServletResponse.addHeader("Content-Type", "application/json");
+                if (e instanceof InvalidTokenException) {
+                    httpServletResponse.setStatus(440);
+                    httpServletResponse.getWriter().write(
                              new Gson().toJson(
                                      ApiResponse.builder()
                                              .success(false)
@@ -89,10 +89,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                                              .message(e.getLocalizedMessage())
                                              .build()));
 
-                 }
-                 else {
-                     httpServletResponse.setStatus(400);
-                     httpServletResponse.getWriter().write(
+                 } else {
+                    httpServletResponse.setStatus(400);
+                    httpServletResponse.getWriter().write(
                              new Gson().toJson(
                                      ApiResponse.builder()
                                              .success(false)
@@ -100,7 +99,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                                              .message(e.getLocalizedMessage())
                                              .build()));
                  }
-                 return;
+                return;
+
              }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
@@ -138,7 +138,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                             .buildDetails(httpServletRequest));
             return usernamePasswordAuthenticationToken;
         } catch (UsernameNotFoundException ex) {
-            log.error("username not found");
+            log.error("username not found", ex);
             throw new UsernameNotFoundException("Oops!, please sign up to continue");
         }
     }

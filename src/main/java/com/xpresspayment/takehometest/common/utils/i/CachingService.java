@@ -1,15 +1,9 @@
-/*
- * Copyright (c) 2021-2022. Fintellics Technologies Inc and its subsidiaries - All Rights Reserved.
- *  Unauthorized copying of this file and other files within the project, via any medium is strictly prohibited Proprietary and
- *    confidential  Written by Patrick Ojunde <p@revnorth.io>
- */
-
-package com.xpresspayment.takehometest.commons.utils.i;
+package com.xpresspayment.takehometest.common.utils.i;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.xpresspayment.takehometest.commons.exceptions.AppException;
+import com.xpresspayment.takehometest.common.exceptions.AppException;
 import org.springframework.stereotype.Service;
 
 @Service

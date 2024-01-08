@@ -1,17 +1,18 @@
 
-package com.xpresspayment.takehometest.commons.configs.exceptions;
+package com.xpresspayment.takehometest.common.configs.exceptions;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-import com.xpresspayment.takehometest.commons.dto.web.response.ApiResponse;
-import com.xpresspayment.takehometest.commons.enumconstants.HttpStatusCode;
-import com.xpresspayment.takehometest.commons.exceptions.AppException;
-import com.xpresspayment.takehometest.commons.exceptions.InvalidTokenException;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.ValidationException;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
+
+import com.xpresspayment.takehometest.common.dto.web.response.ApiResponse;
+import com.xpresspayment.takehometest.common.enumconstants.HttpStatusCode;
+import com.xpresspayment.takehometest.common.exceptions.AppException;
+import com.xpresspayment.takehometest.common.exceptions.InvalidTokenException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;

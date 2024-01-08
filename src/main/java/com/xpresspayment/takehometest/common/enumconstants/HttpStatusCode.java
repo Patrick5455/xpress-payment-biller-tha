@@ -1,11 +1,11 @@
-package com.xpresspayment.takehometest.commons.enumconstants;
+package com.xpresspayment.takehometest.common.enumconstants;
 
-import static com.xpresspayment.takehometest.commons.utils.Constants.BAD_REQUEST;
-import static com.xpresspayment.takehometest.commons.utils.Constants.INTERNAL_SERVER_ERROR;
-import static com.xpresspayment.takehometest.commons.utils.Constants.REQUEST_OK;
-import static com.xpresspayment.takehometest.commons.utils.Constants.RESOURCE_CREATED;
-import static com.xpresspayment.takehometest.commons.utils.Constants.RESOURCE_NOT_FOUND;
-import static com.xpresspayment.takehometest.commons.utils.Constants.UNAUTHORIZED_ACCESS;
+import static com.xpresspayment.takehometest.common.utils.Constants.BAD_REQUEST;
+import static com.xpresspayment.takehometest.common.utils.Constants.INTERNAL_SERVER_ERROR;
+import static com.xpresspayment.takehometest.common.utils.Constants.REQUEST_OK;
+import static com.xpresspayment.takehometest.common.utils.Constants.RESOURCE_CREATED;
+import static com.xpresspayment.takehometest.common.utils.Constants.RESOURCE_NOT_FOUND;
+import static com.xpresspayment.takehometest.common.utils.Constants.UNAUTHORIZED_ACCESS;
 
 ;
 

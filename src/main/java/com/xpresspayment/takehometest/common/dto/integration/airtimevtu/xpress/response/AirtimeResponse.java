@@ -1,4 +1,4 @@
-package com.xpresspayment.takehometest.common.dto.integration.airtimevtu.xpress;
+package com.xpresspayment.takehometest.common.dto.integration.airtimevtu.xpress.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,18 @@ public class AirtimeResponse {
     private String referenceId;
     private Integer responseCode;
     private String responseMessage;
-    private Object data;
+    private Data data;
+
+
+    @lombok.Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Data {
+        private String channel;
+        private Integer amount;
+        private String phoneNumber;
+    }
 
 
 

@@ -1,15 +1,8 @@
-/*
- * Copyright (c) 2022. Fintellics Technologies Inc and its subsidiaries - All Rights Reserved.
- *  Unauthorized copying of this file and other files within the project, via any medium is strictly prohibited Proprietary and
- *    confidential  Written by Patrick Ojunde <p@revnorth.io>
- */
 
-package com.xpresspayment.takehometest.commons.configs.db;
 
-import javax.sql.DataSource;
+package com.xpresspayment.takehometest.common.configs.db;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

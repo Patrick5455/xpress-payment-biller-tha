@@ -1,6 +1,6 @@
-package io.revnorth.webdtos.response.auth.account;
+package com.xpresspayment.takehometest.common.dto.auth.account;
 
-import io.revnorth.enumconstant.UserType;
+import com.xpresspayment.takehometest.common.enumconstants.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +13,11 @@ import lombok.With;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountInfo {
-    private String first_name;
-    private String last_name;
+    private String uuid;
+    private String firstname;
+    private String lastname;
     private String email;
     private String phone;
-    private UserType user_type;
-    private OnBoardingDetails onBoarding_details;
-    private String created_at;
+    private Role role;
+    private String createdAt;
 }

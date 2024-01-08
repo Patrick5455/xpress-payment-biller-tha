@@ -1,17 +1,17 @@
-package io.revnorth.commonannotations.contraintvalidators;
+package com.xpresspayment.takehometest.common.annotations.validators;
 
-import io.revnorth.commonannotations.constraints.ValidPassword;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+
+import com.xpresspayment.takehometest.common.annotations.constraints.ValidPassword;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ValidPasswordValidator implements ConstraintValidator<ValidPassword, String> {
-
 
     @Override
     public void initialize(ValidPassword constraintAnnotation) {

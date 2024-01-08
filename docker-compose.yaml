@@ -1,14 +1,29 @@
+version: '3.1'
 services:
-  mysql:
-    image: 'mysql:latest'
+  xpress_db:
+    image: mysql
+    restart: always
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      MYSQL_ROOT_PASSWORD: xpress_pass
+      MYSQL_DATABASE: xpressDB
     ports:
-      - '3306'
-  redis:
-    image: 'redis:latest'
+      - "3306:3306"
+  xpress_cache:
+    image: redis:7.0.5-alpine
+    restart: always
     ports:
-      - '6379'
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+  xpress_sonar:
+    image: sonarqube:latest
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+
+volumes:
+  cache:
+    driver: local

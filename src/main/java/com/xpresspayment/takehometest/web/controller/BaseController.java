@@ -1,24 +1,12 @@
-/*
- * Copyright (c) 2021.
- * Fintellics Technologies Inc and its subsidiaries - All Rights Reserved.
- * Unauthorized copying of this file and other files within the project, via any medium is strictly prohibited Proprietary and
- * confidential
- * Written by Patrick Ojunde <p@revnorth.io>
- */
 
-package io.revnorth.web.controllers;
+package com.xpresspayment.takehometest.web.controller;
 
-import io.revnorth.common.configs.GlobalConfig;
-import io.revnorth.dto.account.UserDto;
-import io.revnorth.enumconstant.UserType;
-import io.revnorth.exception.RevNorthApiException;
-import io.revnorth.webdtos.response.ApiResponse;
-import io.revnorth.webdtos.response.auth.LoginResponse;
-import io.revnorth.webdtos.response.auth.account.AccountInfo;
-import io.revnorth.webdtos.response.auth.account.OnBoardingDetails;
-import lombok.AllArgsConstructor;
+import com.xpresspayment.takehometest.common.dto.account.UserDto;
+import com.xpresspayment.takehometest.common.dto.auth.response.LoginResponse;
+import com.xpresspayment.takehometest.common.dto.auth.account.AccountInfo;
+import com.xpresspayment.takehometest.common.dto.web.response.ApiResponse;
+import com.xpresspayment.takehometest.common.enumconstants.Role;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 @Data
 public class BaseController {
@@ -48,42 +36,23 @@ public class BaseController {
                 .build();
     }
 
-    public LoginResponse toLoginResponse(UserDto userDto, String authToken, GlobalConfig globalConfig) {
+    public LoginResponse toLoginResponse(String authToken, Role role) {
         return LoginResponse.builder()
-                .auth_token(authToken)
-                .user_type(userDto.getUser_type())
-                .redirectUrl(getRedirectUrl(userDto.getUser_type(), globalConfig))
+                .authToken(authToken)
+                .role(role)
                 .build();
     }
 
-    public static AccountInfo toAccountInfo(UserDto userDto, OnBoardingDetails onBoardingDetails) {
+    public static AccountInfo toAccountInfo(UserDto userDto) {
         return AccountInfo.builder()
-                .first_name(userDto.getFirst_name())
-                .last_name(userDto.getLast_name())
+                .uuid(userDto.getUuid())
+                .firstname(userDto.getFirstname())
+                .lastname(userDto.getLastname())
                 .email(userDto.getEmail())
-                .phone(userDto.getPrimary_phone())
-                .user_type(userDto.getUser_type())
-                .onBoarding_details(onBoardingDetails)
-                .created_at(userDto.getCreated_at().toString())
+                .role(userDto.getRole())
+                .createdAt(userDto.getCreatedAt().toString())
                 .build();
     }
-
-    private String getRedirectUrl(UserType userType, GlobalConfig globalConfig) {
-        switch (userType) {
-            case BUSINESS_PRINCIPAL:
-            case BUSINESS_MEMBER:
-                return globalConfig.getSsoBusinessRedirectUrl();
-            case RETAIL_INVESTOR:
-            case CORPORATE_INVESTOR_PRINCIPAL:
-            case CORPORATE_INVESTOR_MEMBER:
-                return globalConfig.getSsoInvestorRedirectUrl();
-            case SUPER_ADMIN:
-            case ADMIN:
-                return globalConfig.getSsoAdminRedirectUrl();
-        }
-        throw new RevNorthApiException("user not found");
-    }
-
 
 
 }

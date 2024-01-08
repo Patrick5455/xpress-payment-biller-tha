@@ -1,8 +1,11 @@
-package io.revnorth.exception;
+package com.xpresspayment.takehometest.common.exceptions;
 
 
-import lombok.Data; import lombok.With; import lombok.AllArgsConstructor; import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.With;
 
 @EqualsAndHashCode(callSuper = true)
 @Data @With @NoArgsConstructor @AllArgsConstructor

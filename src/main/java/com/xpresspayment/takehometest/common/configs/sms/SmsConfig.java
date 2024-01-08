@@ -1,4 +1,4 @@
-package com.xpresspayment.takehometest.commons.configs.sms;
+package com.xpresspayment.takehometest.common.configs.sms;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

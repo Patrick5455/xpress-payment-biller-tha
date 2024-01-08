@@ -1,13 +1,4 @@
-/*
- *
- *  * Copyright (c) 2021. Fintellics Technologies Inc and its subsidiaries - All Rights Reserved
- *  *  Unauthorized copying of this file and other files within the project, via any medium is strictly prohibited Proprietary and
- *  *  confidential
- *  * Written by Patrick Ojunde <p@revnorth.io>, 05/22/2021
- *
- */
-
-package com.xpresspayment.takehometest.middleware.security.constants;
+package com.xpresspayment.takehometest.security.constants;
 
 public class SecurityConstants {
 

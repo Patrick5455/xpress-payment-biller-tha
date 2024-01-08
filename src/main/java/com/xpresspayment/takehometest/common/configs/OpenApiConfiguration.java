@@ -1,5 +1,5 @@
 
-package com.xpresspayment.takehometest.commons.configs;
+package com.xpresspayment.takehometest.common.configs;
 
 
 import io.swagger.v3.oas.models.Components;
@@ -20,7 +20,7 @@ public class OpenApiConfiguration {
         return new OpenAPI()
                 .info(new Info()
                         .title("Revnorth - Public API")
-                        .description("Service responsible for APIs on the Revnorth platform.")
+                        .description("Service responsible for APIs on the XpressPaymentTest platform.")
                         .version(buildProperties.getVersion()))
                 .addSecurityItem(new SecurityRequirement().addList(authentication))
                 .components(new Components()

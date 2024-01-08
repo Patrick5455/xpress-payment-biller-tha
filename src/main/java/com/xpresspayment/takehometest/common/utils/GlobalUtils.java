@@ -1,7 +1,9 @@
 
 
-package com.xpresspayment.takehometest.commons.utils;
+package com.xpresspayment.takehometest.common.utils;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -13,13 +15,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 import com.fasterxml.uuid.Generators;
-import com.xpresspayment.takehometest.commons.exceptions.InvalidUuidException;
-import com.xpresspayment.takehometest.commons.exceptions.UnsupportedTimeUnitException;
+import com.xpresspayment.takehometest.common.exceptions.AppException;
+import com.xpresspayment.takehometest.common.exceptions.InvalidUuidException;
+import com.xpresspayment.takehometest.common.exceptions.UnsupportedTimeUnitException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.stereotype.Component;
 
-import static com.xpresspayment.takehometest.commons.utils.Constants.DEFAULT_TIMEZONE;
+import static com.xpresspayment.takehometest.common.utils.Constants.DEFAULT_TIMEZONE;
 
 
 @Slf4j
@@ -139,6 +146,22 @@ public class GlobalUtils {
             return defaultValue;
         }
     }
+
+    public static String calculateHMAC512(String data, String key) {
+
+        String HMAC_SHA512 = "HmacSHA512";
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), HMAC_SHA512);
+        Mac mac;
+        try {
+            mac = Mac.getInstance(HMAC_SHA512);
+            mac.init(secretKeySpec);
+            return Hex.encodeHexString(mac.doFinal(data.getBytes()));
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            log.error("something went wrong while computing hmac hash: {}", e.getLocalizedMessage());
+            throw new AppException("something went wrong while computing hmac hmac has",e);
+        }
+    }
+
 }
 
 

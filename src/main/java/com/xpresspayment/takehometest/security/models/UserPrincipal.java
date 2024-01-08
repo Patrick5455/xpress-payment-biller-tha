@@ -1,13 +1,13 @@
 
 
-package com.xpresspayment.takehometest.middleware.security.models;
+package com.xpresspayment.takehometest.security.models;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.xpresspayment.takehometest.commons.dto.account.UserDto;
+import com.xpresspayment.takehometest.common.dto.account.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,9 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import static com.xpresspayment.takehometest.middleware.security.models.AttributeValue.AUTHORITY;
-import static com.xpresspayment.takehometest.middleware.security.models.AttributeValue.EMAIL;
-import static com.xpresspayment.takehometest.middleware.security.models.AttributeValue.ROLE;
+import static com.xpresspayment.takehometest.security.models.AttributeValue.AUTHORITY;
+import static com.xpresspayment.takehometest.security.models.AttributeValue.EMAIL;
+import static com.xpresspayment.takehometest.security.models.AttributeValue.ROLE;
 
 
 @Builder

@@ -1,5 +1,5 @@
 
-package com.xpresspayment.takehometest.commons.exceptions;
+package com.xpresspayment.takehometest.common.exceptions;
 
 import org.springframework.security.core.AuthenticationException;
 
