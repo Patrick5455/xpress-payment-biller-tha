@@ -55,8 +55,9 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto getLoggedInUser() throws InvalidTokenException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = getAuthentication();
         UserDto userDto;
+        log.info("getting logged in user: {}", authentication.getName());
         userDto = (UserDto) redisCaching.getOrDefault(
                 authentication.getName(), null, UserDto.class);
         if (userDto == null) {
@@ -64,6 +65,10 @@ public class UserService implements IUserService {
                     .orElseThrow(() -> new InvalidTokenException("you are logged out, please login again")));
         }
         return userDto;
+    }
+
+    public Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
 }

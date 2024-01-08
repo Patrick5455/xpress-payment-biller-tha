@@ -13,7 +13,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.With;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import static com.xpresspayment.takehometest.security.models.AttributeValue.AUTHORITY;
@@ -32,7 +31,7 @@ public class UserPrincipal implements UserDetails {
     @Getter
     private final String email;
     private final String password;
-    private final Collection<? extends GrantedAuthority> grantedAuthorities;
+    private final Collection<? extends org.springframework.security.core.GrantedAuthority> grantedAuthorities;
     @Getter
     private final Map<String, Object> attributes;
     private final boolean isEnabled;
@@ -40,8 +39,8 @@ public class UserPrincipal implements UserDetails {
 
     public static UserPrincipal createUser(UserDto userDto) {
         log.info("creating user principal from user dto: {}", userDto);
-        Collection<? extends GrantedAuthority> authorities =
-                Collections.singletonList(new RevnorthGrantedAuthority(userDto.getRole()));
+        Collection<? extends org.springframework.security.core.GrantedAuthority> authorities =
+                Collections.singletonList(new GrantedAuthority(userDto.getRole()));
         return UserPrincipal.builder()
                 .uuid(userDto.getUuid())
                 .email(userDto.getEmail())
@@ -61,7 +60,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends org.springframework.security.core.GrantedAuthority> getAuthorities() {
         return null;
     }
 
