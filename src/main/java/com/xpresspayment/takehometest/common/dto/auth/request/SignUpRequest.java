@@ -48,7 +48,7 @@ public class SignUpRequest {
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(request.getPassword())
-                .isActive(false)
+                .isActive(true)
                 .role(request.getRole())
                 .createdAt(Timestamp.valueOf(LocalDateTime.now()))
                 .updatedAt(Timestamp.valueOf(LocalDateTime.now()))
