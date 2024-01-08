@@ -1,0 +1,38 @@
+name: Continuous Integration Workflow
+
+on:
+  pull_request:
+    branches-ignore:
+      - 'main'
+
+jobs:
+  build_test:
+    name: Build and Run Tests on Develop/Feature Branch PR
+    runs-on: ubuntu-20.04
+    environment: development
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.17
+
+      # start  XpressPayment backend services
+      - name: Start  XpressPayment Backend Services
+        run: |
+          echo ---Building and starting up  XpressPayment docker backend services---
+          docker-compose -f docker-compose-dev.yml up -d
+          echo ---Bacend services started and running---
+
+      - name: Maven Test
+        run: |
+          mvn -pl '!migration' clean test -U -s settings.xml -DAWS_DEFAULT_REGION=us-east-1
+
+      - name: Destroy XpressPayment Backend Services
+        run: |
+          echo ---Killing all  XpressPayment docker backend services---
+          docker-compose -f docker-compose-dev.yml down -d
+          echo ---Backend services stopped and killed---
