@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>com.xpresspayment</groupId>
-	<artifactId>billerjwttha</artifactId>
+	<artifactId>xpress-payment-biller-tha</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Xpress Payment THA</name>
 	<description>THA for Xpress Payment on JWT and Biller Services API</description>
