@@ -30,7 +30,7 @@ jobs:
 
       - name: Maven Test
         run: |
-          mvn -pl '!migration' clean test -U -s settings.xml -DAWS_DEFAULT_REGION=us-east-1
+          mvn clean test -U
 
       - name: Destroy XpressPayment Backend Services
         run: |
