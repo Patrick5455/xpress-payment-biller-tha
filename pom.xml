@@ -17,6 +17,7 @@
 
 	<properties>
 		<java.version>17</java.version>
+			<jacoco.outputDir.file>${project.build.directory}/coverage-reports/jacoco</jacoco.outputDir.file>
 	</properties>
 
 	<dependencies>
@@ -220,6 +221,7 @@
 						<exclude>com/xpresspayment/takehometest/domain/**</exclude>
 						<exclude>com/xpresspayment/takehometest/common/configs/OpenApiConfiguration.java</exclude>
 					</excludes>
+					<outputDirectory>${jacoco.outputDir.file}</outputDirectory>
 				</configuration>
 				<version>0.8.7</version>
 				<executions>
