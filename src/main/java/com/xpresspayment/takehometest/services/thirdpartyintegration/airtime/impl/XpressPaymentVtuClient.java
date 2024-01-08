@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import static com.xpresspayment.takehometest.common.utils.Constants.APPLICATION_JSON;
@@ -36,8 +37,6 @@ import static com.xpresspayment.takehometest.common.utils.GlobalUtils.calculateH
 public class XpressPaymentVtuClient implements AirtimeVtuClient {
 
     public final static String AIRTIME_CATEGORY_ID = "1";
-
-    @Value("${xpress.pay.biller.base.url}")
     private String xpressPayBillerBaseUrl;
     private final AirtimeVtuClientProperties airtimeVtuClientProperties;
     private final HttpClientUtil httpClientUtil;

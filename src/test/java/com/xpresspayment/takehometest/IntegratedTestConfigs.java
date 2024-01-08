@@ -8,21 +8,32 @@ import com.xpresspayment.takehometest.common.configs.integrations.airtime.Airtim
 import lombok.extern.slf4j.Slf4j;
 import org.codemonkey.simplejavamail.Mailer;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 
 @TestConfiguration
 @Slf4j
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class IntegratedTestConfigs {
 
     @Bean(name = "testAirtimeVtuClientProperties")
     @ConfigurationProperties(prefix = "test.vtu")
     public AirtimeVtuClientProperties airtimeVtuClientProperties () {
         return AirtimeVtuClientProperties.builder().build();
+    }
+
+
+    @Value("${xpress.pay.biller.base.url}")
+    private String xpressPayBillerBaseUrl;
+    @Bean(name = "testXpressPayBillerBaseUrl")
+    public String xpressPayBillerBaseUrl () {
+        return xpressPayBillerBaseUrl;
     }
 
 }

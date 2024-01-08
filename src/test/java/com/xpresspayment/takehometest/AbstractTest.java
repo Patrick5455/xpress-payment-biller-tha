@@ -1,26 +1,19 @@
 package com.xpresspayment.takehometest;
 
 
-import java.sql.Timestamp;
-
-import com.xpresspayment.takehometest.common.utils.GlobalUtils;
 import com.xpresspayment.takehometest.data.UserRepository;
 import com.xpresspayment.takehometest.domain.UserEntity;
 import com.xpresspayment.takehometest.services.SignupService;
 import com.xpresspayment.takehometest.services.thirdpartyintegration.airtime.impl.XpressPaymentVtuClient;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
@@ -47,10 +40,13 @@ public class AbstractTest {
     protected UserRepository userRepository;
     @Autowired
     protected SignupService signupService;
-    protected XpressPaymentVtuClient xpressPaymentVtuClient;
-
     protected static UserEntity userEntity1;
     protected static UserEntity userEntity2;
+
+    @Test
+    public void testDefault() {
+        log.info("test");
+    }
 
 
 }
