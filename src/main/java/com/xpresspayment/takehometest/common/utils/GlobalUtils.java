@@ -55,7 +55,7 @@ public class GlobalUtils {
     }
 
     public static final Pattern VALID_PHONE_NUMBER_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^\\+\\d{1,3}\\d{1,14}$");
 
     public static boolean validatePhoneNumber(String phoneNumber) {
         //TODO: collect the first three chars of the string and validate it as a valid country code

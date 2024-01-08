@@ -39,6 +39,7 @@ public class UserPrincipal implements UserDetails {
 
 
     public static UserPrincipal createUser(UserDto userDto) {
+        log.info("creating user principal from user dto: {}", userDto);
         Collection<? extends GrantedAuthority> authorities =
                 Collections.singletonList(new RevnorthGrantedAuthority(userDto.getRole()));
         return UserPrincipal.builder()

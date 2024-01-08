@@ -9,10 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.google.gson.Gson;
 import com.xpresspayment.takehometest.common.exceptions.AppException;
 import com.xpresspayment.takehometest.common.exceptions.HttpCallException;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -32,7 +35,10 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@AllArgsConstructor
 public class HttpClientUtil {
+
+    private final CloseableHttpClient httpClient;
 
     public <T> T singleClassGet(
             String url, Map<String, String> reqHeaders,
@@ -109,6 +115,11 @@ public class HttpClientUtil {
 
 
     private void throwOnError (CloseableHttpResponse response) throws HttpCallException {
+        if (response == null || response.getStatusLine() == null) {
+            log.error("something went wrong while making http call >>> response is null");
+            throw new HttpCallException("something went wrong while making http call >>> no response from server");
+        }
+
         String statusCode = String.valueOf(response.getStatusLine().getStatusCode());
         if  (statusCode.startsWith("4") || statusCode.startsWith("5")) {
             log.error("something went wrong while making http call >>> {}", response.getStatusLine());
@@ -142,40 +153,34 @@ public class HttpClientUtil {
             }
         }
     }
-    private CloseableHttpResponse executeRequestForHttpResponse(HttpRequestBase request) throws HttpCallException {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+    public CloseableHttpResponse executeRequestForHttpResponse(HttpRequestBase request) throws HttpCallException {
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                HttpEntity entity = response.getEntity();
+                log.info("response status code: {}", response.getStatusLine().getStatusCode());
+                log.info("http POST response: {}", entity);
+                throwOnError(response);
+                return response;
+            } catch (Exception e) {
+                log.error("something went wrong while making post request ", e);
+                throw new HttpCallException("something went wrong while making post request", e);
+            }
+    }
+
+    public <T> T executeRequest(HttpRequestBase request, Class<T> cls) throws HttpCallException {
+        T results = null;
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
-            log.info("response status code: {}", response.getStatusLine().getStatusCode());
             log.info("http POST response: {}", entity);
+            if (entity != null) {
+                // return it as a custom class type
+                results = new Gson().fromJson(EntityUtils.toString(entity), cls);
+            }
             throwOnError(response);
-            return response;
+            return results;
         } catch (Exception e) {
             log.error("something went wrong while making post request ", e);
             throw new HttpCallException("something went wrong while making post request", e);
         }
     }
-
-    private <T> T executeRequest(HttpRequestBase request, Class<T> cls) throws HttpCallException {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            T results = null;
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                HttpEntity entity = response.getEntity();
-                log.info("http POST response: {}", entity);
-                if (entity != null) {
-                    // return it as a custom class type
-                    results = new Gson().fromJson(EntityUtils.toString(entity), cls);
-                }
-                throwOnError(response);
-                return results;
-            } catch (Exception e) {
-                log.error("something went wrong while making post request ", e);
-                throw new HttpCallException("something went wrong while making post request", e);
-            }
-        } catch (IOException e) {
-            log.error("something went wrong while executing http request:", e);
-            throw new AppException("something went wrong while executing http request", e);
-        }
-
-    }
 }
+

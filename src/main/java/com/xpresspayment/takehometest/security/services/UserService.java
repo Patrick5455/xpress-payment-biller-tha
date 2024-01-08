@@ -35,6 +35,7 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto loadUserDtoByUsername(String email) throws UsernameNotFoundException{
+        log.info("loading user dto by email: {}", email);
         return  UserDto.toUserDto(userDao.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("the email does not exist")
         ));

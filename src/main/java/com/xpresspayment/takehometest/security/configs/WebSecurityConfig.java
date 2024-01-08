@@ -4,7 +4,6 @@ package com.xpresspayment.takehometest.security.configs;
 
 import com.xpresspayment.takehometest.security.services.RestAuthenticationEntryPoint;
 import com.xpresspayment.takehometest.security.services.i.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

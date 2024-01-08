@@ -220,6 +220,7 @@
 						<exclude>com/xpresspayment/takehometest/common/enumconstants/**</exclude>
 						<exclude>com/xpresspayment/takehometest/domain/**</exclude>
 						<exclude>com/xpresspayment/takehometest/common/configs/OpenApiConfiguration.java</exclude>
+						<exclude>com/xpresspayment/takehometest/web/controller/BaseController.java</exclude>
 					</excludes>
 					<outputDirectory>${jacoco.outputDir.file}</outputDirectory>
 				</configuration>
