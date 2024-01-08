@@ -1,9 +1,10 @@
 name: Continuous Integration Workflow
 
 on:
-  pull_request:
-    branches-ignore:
+  push:
+    branches:
       - 'main'
+      - 'develop'
 
 jobs:
   build_test:
@@ -24,15 +25,15 @@ jobs:
       - name: Start  XpressPayment Backend Services
         run: |
           echo ---Building and starting up  XpressPayment docker backend services---
-          docker-compose -f docker-compose-dev.yml up -d
+          docker-compose -f docker-compose-dev.yaml up -d
           echo ---Bacend services started and running---
 
       - name: Maven Test
         run: |
-          mvn -pl '!migration' clean test -U -s settings.xml -DAWS_DEFAULT_REGION=us-east-1
+          mvn clean test -U
 
       - name: Destroy XpressPayment Backend Services
         run: |
           echo ---Killing all  XpressPayment docker backend services---
-          docker-compose -f docker-compose-dev.yml down -d
+          docker-compose -f docker-compose-dev.yaml down -d
           echo ---Backend services stopped and killed---

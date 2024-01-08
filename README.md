@@ -103,7 +103,7 @@ mvn test
 
 Screenshot of test coverage report:
 
-![Test Coverage](.jacoco-test-coverage.png)
+![Test Coverage](./jacoco-test-coverage-report.png)
 
 ```bash
 ./jacoco-test-coverage.sh
