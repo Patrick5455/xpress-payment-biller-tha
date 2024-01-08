@@ -101,6 +101,10 @@ mvn test
 ```
 #### Test Coverage with JaCoCo
 
+Screenshot of test coverage report:
+
+![Test Coverage](.jacoco-test-coverage.png)
+
 ```bash
 ./jacoco-test-coverage.sh
 ```
