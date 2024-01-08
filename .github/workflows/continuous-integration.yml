@@ -25,7 +25,7 @@ jobs:
       - name: Start  XpressPayment Backend Services
         run: |
           echo ---Building and starting up  XpressPayment docker backend services---
-          docker-compose -f docker-compose-dev.yml up -d
+          docker-compose -f docker-compose-dev.yaml up -d
           echo ---Bacend services started and running---
 
       - name: Maven Test
@@ -35,5 +35,5 @@ jobs:
       - name: Destroy XpressPayment Backend Services
         run: |
           echo ---Killing all  XpressPayment docker backend services---
-          docker-compose -f docker-compose-dev.yml down -d
+          docker-compose -f docker-compose-dev.yaml down -d
           echo ---Backend services stopped and killed---
