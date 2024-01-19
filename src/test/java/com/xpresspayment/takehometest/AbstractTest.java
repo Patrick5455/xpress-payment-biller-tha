@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes ={Service.class},
-        webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @WithMockUser
 @TestPropertySource(locations = "classpath:application-test.properties")

@@ -69,7 +69,7 @@ public class SessionController extends BaseController {
     )
     @PostMapping(value = "/sign-up", produces = {})
     public ResponseEntity<?> signupUser(
-            @Valid @Validated  @RequestBody SignUpRequest request) {
+            @RequestBody  @Valid SignUpRequest request) {
         ResponseEntity<?> responseEntity;
         try {
             SignUpResponse response = signupService.registerUser(request);
@@ -103,7 +103,7 @@ public class SessionController extends BaseController {
     )
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(
-            @Valid @RequestBody LoginRequest request)
+            @RequestBody @Valid LoginRequest request)
             throws InvalidCredentialException {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(

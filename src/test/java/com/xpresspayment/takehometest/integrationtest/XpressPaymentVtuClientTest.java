@@ -1,8 +1,6 @@
 package com.xpresspayment.takehometest.integrationtest;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.google.gson.Gson;
 import com.xpresspayment.takehometest.AbstractTest;
@@ -14,7 +12,6 @@ import com.xpresspayment.takehometest.common.dto.web.request.PurchaseAirtime;
 import com.xpresspayment.takehometest.common.exceptions.HttpCallException;
 import com.xpresspayment.takehometest.common.utils.HttpClientUtil;
 import com.xpresspayment.takehometest.services.thirdpartyintegration.airtime.impl.XpressPaymentVtuClient;
-import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,66 +21,35 @@ import static com.xpresspayment.takehometest.common.dto.web.request.PurchaseAirt
 import static com.xpresspayment.takehometest.common.dto.web.request.PurchaseAirtime.Network.GLO;
 import static com.xpresspayment.takehometest.common.dto.web.request.PurchaseAirtime.Network.MTN;
 import static com.xpresspayment.takehometest.common.dto.web.request.PurchaseAirtime.Network.NINE_MOBILE;
-import static com.xpresspayment.takehometest.common.utils.Constants.APPLICATION_JSON;
-import static com.xpresspayment.takehometest.services.thirdpartyintegration.airtime.impl.XpressPaymentVtuClient.AIRTIME_CATEGORY_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.eq;
 
 class XpressPaymentVtuClientTest extends AbstractTest {
 
     @MockBean
     private XpressPaymentVtuClient xpressPaymentVtuClient;
-    private AirtimeVtuClientProperties airtimeVtuClientProperties;
-    private HttpClientUtil httpClientUtil;
-
-    private  String xpressPayBillerBaseUrl;
-    private HashMap<String, String> purchaseAirtimeRequestHeaders;
-    private  Map<String, String> requestHeaders;
-    private HashMap<String, String> getNetworkUniqueCodeRequestHeaders;
-    private HashMap<String, String> getNetworkUniqueCodeRequestParams;
-
 
     @BeforeEach
     void setUp() throws HttpCallException {
 
-        this.xpressPayBillerBaseUrl = "https://billerstest.xpresspayments.com:9603/api/v1";
-        this.airtimeVtuClientProperties = AirtimeVtuClientProperties.builder()
+         AirtimeVtuClientProperties airtimeVtuClientProperties;
+         HttpClientUtil httpClientUtil;
+         String xpressPayBillerBaseUrl;
+
+        xpressPayBillerBaseUrl = "https://billerstest.xpresspayments.com:9603/api/v1";
+        airtimeVtuClientProperties = AirtimeVtuClientProperties.builder()
                 .privateKey("privateKey")
                 .publicKey("publicKey")
                 .build();
-        this.httpClientUtil = mock(HttpClientUtil.class);
+        httpClientUtil = mock(HttpClientUtil.class);
         xpressPaymentVtuClient = new XpressPaymentVtuClient(xpressPayBillerBaseUrl, airtimeVtuClientProperties, httpClientUtil);
 
-
-        requestHeaders = new HashMap<>();
-        requestHeaders.put(HttpHeaders.ACCEPT, APPLICATION_JSON);
-        requestHeaders.put(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
-
-
-        getNetworkUniqueCodeRequestHeaders = new HashMap<>();
-        getNetworkUniqueCodeRequestHeaders.putAll(requestHeaders);
-        getNetworkUniqueCodeRequestHeaders.put(HttpHeaders.AUTHORIZATION,
-                String.format("Bearer %s",
-                        airtimeVtuClientProperties.getPublicKey()));
-        getNetworkUniqueCodeRequestParams = new HashMap<>() {
-            {
-                put("categoryId", AIRTIME_CATEGORY_ID);
-                put("billerId", MTN.getBillerId());
-            }
-        };
-
-
-        purchaseAirtimeRequestHeaders = new HashMap<>();
-        purchaseAirtimeRequestHeaders.putAll(requestHeaders);
-        purchaseAirtimeRequestHeaders.put(HttpHeaders.AUTHORIZATION,
-                String.format("Bearer %s",
-                        airtimeVtuClientProperties.getPublicKey()));
 
         AirtimeProductCategoryResponse response = AirtimeProductCategoryResponse.builder()
                 .responseCode("00")
@@ -109,11 +75,6 @@ class XpressPaymentVtuClientTest extends AbstractTest {
                                 .build())),
                eq(AirtimeProductCategoryResponse.class))
         ).thenReturn(response);
-
-
-        purchaseAirtimeRequestHeaders.put("PaymentHash", "dummy-payment-hash");
-        purchaseAirtimeRequestHeaders.put("Channel", "api");
-
 
         AirtimeResponse airtimeResponse = AirtimeResponse.builder()
                 .requestId("requestId")
@@ -144,10 +105,7 @@ class XpressPaymentVtuClientTest extends AbstractTest {
                                 .build())),
                 eq(AirtimeResponse.class)))
                 .thenReturn(airtimeResponse);
-
-
     }
-
 
 
     @Test

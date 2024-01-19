@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
@@ -24,6 +25,7 @@ public class IntegratedTestConfigs {
 
     @Bean(name = "testAirtimeVtuClientProperties")
     @ConfigurationProperties(prefix = "test.vtu")
+    @Profile("test")
     public AirtimeVtuClientProperties airtimeVtuClientProperties () {
         return AirtimeVtuClientProperties.builder().build();
     }
@@ -32,6 +34,7 @@ public class IntegratedTestConfigs {
     @Value("${xpress.pay.biller.base.url}")
     private String xpressPayBillerBaseUrl;
     @Bean(name = "testXpressPayBillerBaseUrl")
+    @Profile("test")
     public String xpressPayBillerBaseUrl () {
         return xpressPayBillerBaseUrl;
     }
