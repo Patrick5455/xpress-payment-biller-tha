@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
 class BillerControllerTest extends AbstractTest {
 
     @Autowired
@@ -47,7 +49,7 @@ class BillerControllerTest extends AbstractTest {
                 .phoneNumber("08104708102")
                 .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/v1/biller/airtime")
+        mockMvc.perform(MockMvcRequestBuilders.post("/v1/biller/airtime").with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(purchaseAirtime)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())

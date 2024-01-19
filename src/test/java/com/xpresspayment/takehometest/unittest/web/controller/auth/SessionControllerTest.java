@@ -37,6 +37,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -85,7 +86,7 @@ class SessionControllerTest extends AbstractTest {
         when(signupService.registerUser(any(SignUpRequest.class))).thenReturn(signUpResponse);
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
-                .post("/v1/sessions/sign-up")
+                .post("/v1/sessions/sign-up").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(signUpRequest))
         );
@@ -107,7 +108,7 @@ class SessionControllerTest extends AbstractTest {
         when(signupService.registerUser(any(SignUpRequest.class))).thenReturn(signUpResponse);
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
-                .post("/v1/sessions/sign-up")
+                .post("/v1/sessions/sign-up").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(signUpRequest))
         );
