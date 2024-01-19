@@ -157,6 +157,7 @@ class HttpClientUtilTest {
         when(mockHttpResponse.getEntity()).thenReturn(httpEntity);
     }
 
+
     @Builder
     @Data
     @AllArgsConstructor

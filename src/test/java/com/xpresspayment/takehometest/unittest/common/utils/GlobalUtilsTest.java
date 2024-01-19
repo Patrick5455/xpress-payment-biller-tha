@@ -70,6 +70,4 @@ class GlobalUtilsTest extends AbstractTest {
         assertEquals(defaultValue, GlobalUtils.getOrDefault("NON_EXISTENT_KEY", defaultValue), "Should return the default value if the key does not exist");
     }
 
-    // Add more test methods for other utility methods in GlobalUtils
-    // For example, you can add tests for generateOtp, validateUuid, calculateFutureDate, etc.
 }
