@@ -25,7 +25,6 @@ class BillerControllerTest extends AbstractTest {
 
     @Test
     void testPurchaseAirtime() throws Exception {
-        // Mock AirtimeVtuClient response
       AirtimeResponse airtimeResponse = AirtimeResponse.builder()
                 .requestId("requestId")
                 .referenceId("1234567890")
@@ -42,14 +41,12 @@ class BillerControllerTest extends AbstractTest {
         Mockito.when(airtimeVtuClient.purchaseAirtime(Mockito.any(PurchaseAirtime.class), Mockito.anyString()))
                 .thenReturn(airtimeResponse);
 
-        // Create a sample request
         PurchaseAirtime purchaseAirtime = PurchaseAirtime.builder()
                 .amount(10000)
                 .network(PurchaseAirtime.Network.MTN)
                 .phoneNumber("08104708102")
                 .build();
 
-        // Perform the MVC request and assert the response
         mockMvc.perform(MockMvcRequestBuilders.post("/v1/biller/airtime")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(purchaseAirtime)))

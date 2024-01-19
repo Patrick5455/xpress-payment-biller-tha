@@ -2,8 +2,6 @@
 package com.xpresspayment.takehometest.common.configs.exceptions;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -25,7 +23,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 @Slf4j
-public class RestExceptionHandler{
+public class RestExceptionHandler {
 
     @ExceptionHandler(value = {AppException.class})
     public ResponseEntity<?> handleAllExceptions(AppException ex) {
@@ -36,15 +34,14 @@ public class RestExceptionHandler{
                         .build());
     }
 
-        @ExceptionHandler(value
-                = {MethodArgumentNotValidException.class})
-        public ResponseEntity<?> handleInvalidMethodArgument(MethodArgumentNotValidException ex) {
-            List<String> errors = ex.getBindingResult()
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    public ResponseEntity<?> handleInvalidMethodArgument(MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult()
                     .getFieldErrors()
                     .stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .collect(Collectors.toList());
-            return  ResponseEntity.badRequest().body(
+                    .toList();
+        return  ResponseEntity.badRequest().body(
                     ApiResponse.builder()
                             .message(errors.toString())
                             .code(HttpStatusCode._400.getCode())
@@ -55,8 +52,7 @@ public class RestExceptionHandler{
 
 
 
-    @ExceptionHandler(value
-            = {HttpMessageNotReadableException.class})
+    @ExceptionHandler(value = {HttpMessageNotReadableException.class})
     public ResponseEntity<?> handleIHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         log.error("HttpMessageNotReadableException:",ex);
         return  ResponseEntity.badRequest().body(
@@ -68,8 +64,7 @@ public class RestExceptionHandler{
         );
     }
 
-    @ExceptionHandler(value
-            = {InvalidTokenException.class})
+    @ExceptionHandler(value = {InvalidTokenException.class})
     public ResponseEntity<?> handleInvalidTokenException(InvalidTokenException ex) {
         log.error("InvalidTokenException:",ex);
         return  ResponseEntity.badRequest().body(
@@ -81,10 +76,9 @@ public class RestExceptionHandler{
         );
     }
 
-    @ExceptionHandler(value
-            = {AuthenticationException.class})
+    @ExceptionHandler(value = {AuthenticationException.class})
     public ResponseEntity<?> handleAuthenticationException(AuthenticationException ex) {
-            log.error("AuthenticationException:",ex);
+        log.error("AuthenticationException:",ex);
         return  ResponseEntity.badRequest().body(
                 ApiResponse.builder()
                         .message("you've been logged out, please login again to continue:")
@@ -95,10 +89,9 @@ public class RestExceptionHandler{
     }
 
 
-    @ExceptionHandler(value
-            = {ValidationException.class})
+    @ExceptionHandler(value = {ValidationException.class})
     public ResponseEntity<?> handleValidationExceptionException(ValidationException ex) {
-            log.error("ValidationException:",ex);
+        log.error("ValidationException:",ex);
         return  ResponseEntity.badRequest().body(
                 ApiResponse.builder()
                         .message("invalid request, please check your request")
@@ -108,8 +101,7 @@ public class RestExceptionHandler{
         );
     }
 
-    @ExceptionHandler(value
-            = {ConstraintViolationException.class})
+    @ExceptionHandler(value = {ConstraintViolationException.class})
     public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException ex) {
         log.error("ConstraintViolationException:",ex);
         return  ResponseEntity.badRequest().body(
@@ -117,7 +109,7 @@ public class RestExceptionHandler{
                         .message(
                                 ex.getConstraintViolations().stream().map(
                                                 ConstraintViolation::getMessage)
-                                        .collect(Collectors.toList()).get(0))
+                                        .toList().get(0))
                         .code(HttpStatusCode._400.getCode())
                         .success(false)
                         .build()
@@ -137,7 +129,6 @@ public class RestExceptionHandler{
         );
     }
 
-    //ValidationException
 
 }
 

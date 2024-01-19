@@ -1,4 +1,4 @@
-package com.xpresspayment.takehometest.unittest.services;
+package com.xpresspayment.takehometest.integrationtest;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -5,16 +5,13 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import com.xpresspayment.takehometest.common.enumconstants.Role;
 import com.xpresspayment.takehometest.common.exceptions.InvalidTokenException;
 import com.xpresspayment.takehometest.common.utils.GlobalUtils;
 import com.xpresspayment.takehometest.common.utils.i.CachingService;
 import com.xpresspayment.takehometest.security.constants.SecurityConstants;
-import com.xpresspayment.takehometest.security.models.AttributeValue;
 import com.xpresspayment.takehometest.security.models.AuthOwnerDetails;
 import com.xpresspayment.takehometest.security.models.UserPrincipal;
 import com.xpresspayment.takehometest.security.services.i.AuthenticationService;

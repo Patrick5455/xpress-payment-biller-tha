@@ -37,7 +37,7 @@ public class UserEntity {
     @JsonIgnore
     public Long id;
 
-    @Column(name = "uuid")
+    @Column(name = "uuid", nullable=false, unique=true)
     @NotNull
     @NotBlank
     private String uuid;
@@ -52,7 +52,7 @@ public class UserEntity {
     @NotNull
     private String lastname;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable=false, unique=true)
     @NotBlank
     private String email;
 
