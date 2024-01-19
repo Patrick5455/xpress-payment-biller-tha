@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AirtimeProductCategoryResponse {
 
-    public String responseCode;
-    public String responseMessage;
-    public Data data;
+    private String responseCode;
+    private String responseMessage;
+    private Data data;
 
 
     @lombok.Data

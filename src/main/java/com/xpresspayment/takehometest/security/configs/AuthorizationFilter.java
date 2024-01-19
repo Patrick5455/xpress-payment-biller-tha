@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.xpresspayment.takehometest.common.dto.web.response.ApiResponse;
 import com.xpresspayment.takehometest.common.enumconstants.HttpStatusCode;
+import com.xpresspayment.takehometest.common.exceptions.AppException;
 import com.xpresspayment.takehometest.common.exceptions.InvalidTokenException;
-import com.xpresspayment.takehometest.common.utils.i.CachingService;
+import com.xpresspayment.takehometest.common.utils.i.AbstractCachingService;
 import com.xpresspayment.takehometest.security.models.AuthOwnerDetails;
 import com.xpresspayment.takehometest.security.models.UserPrincipal;
 import com.xpresspayment.takehometest.security.services.i.AuthenticationService;
@@ -38,11 +39,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     private final IUserService userService;
     private final AuthenticationService authenticationService;
-    private final CachingService<String, Object> redisCaching;
+    private final AbstractCachingService<String, Object> redisCaching;
 
     public AuthorizationFilter(IUserService userService,
                                AuthenticationService authenticationService,
-                               @Qualifier("redis") CachingService<String, Object> redisCaching) {
+                               @Qualifier("redis") AbstractCachingService<String, Object> redisCaching) {
         this.userService = userService;
         this.authenticationService = authenticationService;
         this.redisCaching = redisCaching;
@@ -95,7 +96,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                              new Gson().toJson(
                                      ApiResponse.builder()
                                              .success(false)
-                                             .code(HttpStatusCode._400.getCode())
+                                             .code(HttpStatusCode.STATUS_400.getCode())
                                              .message(e.getLocalizedMessage())
                                              .build()));
                  }
@@ -139,7 +140,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             return usernamePasswordAuthenticationToken;
         } catch (UsernameNotFoundException ex) {
             log.error("username not found", ex);
-            throw new UsernameNotFoundException("Oops!, please sign up to continue");
+            throw new AppException("Oops!, please sign up to continue");
         }
     }
 }

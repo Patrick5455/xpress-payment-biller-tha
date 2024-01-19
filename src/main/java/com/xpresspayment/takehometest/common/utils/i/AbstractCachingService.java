@@ -7,7 +7,7 @@ import com.xpresspayment.takehometest.common.exceptions.AppException;
 import org.springframework.stereotype.Service;
 
 @Service
-public abstract class CachingService<K, V> {
+public abstract class AbstractCachingService<K, V> {
 
     /**
      * @apiNote : default implementation uses concurrent hash map
@@ -25,7 +25,7 @@ public abstract class CachingService<K, V> {
             return defaultValue;
         }
         return cache.get(k);
-    };
+    }
 
     /**
      * *
@@ -36,7 +36,7 @@ public abstract class CachingService<K, V> {
      */
     public V getOrDefault(K k, V defaultValue, Class<?> deserializeTo) {
         throw new AppException("no cache implementation found");
-    };
+    }
 
     /**
      * @apiNote does not support null values
@@ -64,10 +64,6 @@ public abstract class CachingService<K, V> {
 
     public void remove(K key) {
         cache.remove(key);
-    }
-
-    public long expireKey (K key, int seconds) {
-        return seconds;
     }
 
     public boolean contains(K key) {

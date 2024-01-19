@@ -7,74 +7,72 @@ import static com.xpresspayment.takehometest.common.utils.Constants.RESOURCE_CRE
 import static com.xpresspayment.takehometest.common.utils.Constants.RESOURCE_NOT_FOUND;
 import static com.xpresspayment.takehometest.common.utils.Constants.UNAUTHORIZED_ACCESS;
 
-;
-
 public enum HttpStatusCode {
 
-    _200 (200, REQUEST_OK) {
+    STATUS_200(200, REQUEST_OK) {
         @Override
         public int getCode() {
-            return _200.code;
+            return STATUS_200.code;
         }
 
         @Override
         public String getMessage() {
-            return _200.message;
+            return STATUS_200.message;
         }
     },
-    _201 (201, RESOURCE_CREATED) {
+    STATUS_201(201, RESOURCE_CREATED) {
         @Override
         public int getCode() {
-            return _201.code;
+            return STATUS_201.code;
         }
 
         @Override
         public String getMessage() {
-            return _201.message;
+            return STATUS_201.message;
         }
     },
-    _400 (400, BAD_REQUEST) {
+    STATUS_400(400, BAD_REQUEST) {
         @Override
         public int getCode() {
-            return _400.code;
+            return STATUS_400.code;
         }
 
         @Override
         public String getMessage() {
-            return _400.message;
+            return STATUS_400.message;
         }
     },
-    _404 (404, RESOURCE_NOT_FOUND) {
+    STATUS_404(404, RESOURCE_NOT_FOUND) {
         @Override
         public int getCode() {
-            return _404.code;
+            return STATUS_404.code;
         }
 
         @Override
         public String getMessage() {
-            return _404.message;
+            return STATUS_404.message;
         }
     },
-    _401 (401, UNAUTHORIZED_ACCESS) {
+    STATUS_401(401, UNAUTHORIZED_ACCESS) {
         @Override
         public int getCode() {
-            return _401.code;
+            return STATUS_401.code;
         }
 
         @Override
         public String getMessage() {
-            return _404.message;
+            return STATUS_404.message;
         }
     },
-    _500 (200, INTERNAL_SERVER_ERROR) {
+    STATUS_500(200, INTERNAL_SERVER_ERROR) {
         @Override
         public int getCode() {
-            return _500.code;
+            return STATUS_500.code;
         }
 
         @Override
         public String getMessage() {
-            return _500.message;
+            return STATUS_500.message;
         }
     };
 
@@ -82,7 +80,7 @@ public enum HttpStatusCode {
     private final int code;
     private final String message;
 
-     HttpStatusCode(int code , String message){
+    HttpStatusCode(int code , String message){
         this.code = code;
         this.message = message;
     }

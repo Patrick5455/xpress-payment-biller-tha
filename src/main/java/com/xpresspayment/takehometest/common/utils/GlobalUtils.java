@@ -33,11 +33,15 @@ import static com.xpresspayment.takehometest.common.utils.Constants.DEFAULT_TIME
 @Component
 public class GlobalUtils {
 
-    final static int SHORT_UUID_LENGTH = 8;
     final static int LONG_UUID_LENGTH = 16;
     final static int DEFAULT_OTP_LENGTH = 6;
-    private static final int RECOVERY_CODE_LENGTH = 8;
-    private static final int NUMBER_OF_RECOVERY_CODES = 10;
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static final Pattern VALID_PHONE_NUMBER_REGEX =
+            Pattern.compile("^\\+\\d{1,3}\\d{1,14}$");
+    private GlobalUtils() {}
 
 
     public static String generateUuid() {
@@ -46,16 +50,11 @@ public class GlobalUtils {
                 .substring(0, LONG_UUID_LENGTH);
     }
 
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
     public static boolean validateEmail(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
 
-    public static final Pattern VALID_PHONE_NUMBER_REGEX =
-            Pattern.compile("^\\+\\d{1,3}\\d{1,14}$");
 
     public static boolean validatePhoneNumber(String phoneNumber) {
         //TODO: collect the first three chars of the string and validate it as a valid country code
@@ -90,6 +89,7 @@ public class GlobalUtils {
         try {
             return UUID.fromString(uuid).toString();
         } catch (IllegalArgumentException e) {
+            log.error("invalid resource uuid: {}", e.getLocalizedMessage());
             throw new InvalidUuidException("invalid resource uuid");
         }
     }

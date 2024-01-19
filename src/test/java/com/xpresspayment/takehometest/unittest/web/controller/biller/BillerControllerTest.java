@@ -51,7 +51,7 @@ class BillerControllerTest extends AbstractTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(purchaseAirtime)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(HttpStatusCode._200.getCode()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(HttpStatusCode.STATUS_200.getCode()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("user successfully purchased airtime"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true));
     }

@@ -10,7 +10,6 @@ import com.xpresspayment.takehometest.common.exceptions.AppException;
 import com.xpresspayment.takehometest.common.utils.GlobalUtils;
 import com.xpresspayment.takehometest.security.models.UserPrincipal;
 import com.xpresspayment.takehometest.security.services.i.AuthenticationService;
-import com.xpresspayment.takehometest.security.services.i.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,16 +21,16 @@ import static com.xpresspayment.takehometest.common.dto.auth.request.SignUpReque
 @Service
 @Slf4j
 @AllArgsConstructor
+@Transactional
 public class SignupService {
 
     private final UserRepository userDao;
     private final AuthenticationService authenticationService;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
     public SignUpResponse registerUser (SignUpRequest request) throws AppException {
         if (userDao.findByEmail(request.getEmail()).isPresent()) {
-            throw new AppException("user with this email already exists", HttpStatusCode._400);
+            throw new AppException("user with this email already exists", HttpStatusCode.STATUS_400);
         }
         try {
             request.setPassword(passwordEncoder.encode(request.getPassword()));

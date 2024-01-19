@@ -1,7 +1,6 @@
 package com.xpresspayment.takehometest.services.thirdpartyintegration.airtime.impl;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +9,11 @@ import javax.annotation.PostConstruct;
 import com.google.gson.Gson;
 import com.xpresspayment.takehometest.common.configs.integrations.airtime.AirtimeVtuClientProperties;
 import com.xpresspayment.takehometest.common.dto.integration.airtimevtu.xpress.request.AirtimeRequest;
-import com.xpresspayment.takehometest.common.dto.integration.airtimevtu.xpress.response.AirtimeResponse;
 import com.xpresspayment.takehometest.common.dto.integration.airtimevtu.xpress.response.AirtimeProductCategoryResponse;
+import com.xpresspayment.takehometest.common.dto.integration.airtimevtu.xpress.response.AirtimeResponse;
 import com.xpresspayment.takehometest.common.dto.web.request.PurchaseAirtime;
 import com.xpresspayment.takehometest.common.exceptions.AppException;
 import com.xpresspayment.takehometest.common.exceptions.HttpCallException;
-import com.xpresspayment.takehometest.common.utils.GlobalUtils;
 import com.xpresspayment.takehometest.common.utils.HttpClientUtil;
 import com.xpresspayment.takehometest.services.thirdpartyintegration.airtime.i.AirtimeVtuClient;
 import lombok.AllArgsConstructor;
@@ -24,8 +22,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import static com.xpresspayment.takehometest.common.utils.Constants.APPLICATION_JSON;
@@ -37,10 +33,10 @@ import static com.xpresspayment.takehometest.common.utils.GlobalUtils.calculateH
 public class XpressPaymentVtuClient implements AirtimeVtuClient {
 
     public final static String AIRTIME_CATEGORY_ID = "1";
-    private String xpressPayBillerBaseUrl;
+    private final Map<String, String> requestHeaders = new HashMap<>();
     private final AirtimeVtuClientProperties airtimeVtuClientProperties;
     private final HttpClientUtil httpClientUtil;
-    private final Map<String, String> requestHeaders = new HashMap<>();
+    private String xpressPayBillerBaseUrl;
 
     @PostConstruct
     public void setRequestHeaders() {
@@ -98,12 +94,10 @@ public class XpressPaymentVtuClient implements AirtimeVtuClient {
 
         String createVirtualAccountEndpoint = String.format("%s/products", xpressPayBillerBaseUrl);
         String requestBody = new Gson().toJson(PageAndSize.builder().build());
-        HashMap<String, String> params = new HashMap<>() {
-            {
-                put("categoryId", AIRTIME_CATEGORY_ID);
-                put("billerId", network.getBillerId());
-            }
-        };
+        HashMap<String, String> params = new HashMap<>() {};
+        params.put("categoryId", AIRTIME_CATEGORY_ID);
+        params.put("billerId", network.getBillerId());
+
 
         requestHeaders.put(HttpHeaders.AUTHORIZATION,
                 String.format("Bearer %s",

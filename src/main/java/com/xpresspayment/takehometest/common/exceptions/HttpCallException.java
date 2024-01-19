@@ -10,7 +10,7 @@ import lombok.With;
 @EqualsAndHashCode(callSuper = true)
 @Data @With @NoArgsConstructor @AllArgsConstructor
 public class HttpCallException extends Exception {
-    private int code;
+    private int code; //NOSONAR
 
     public HttpCallException(String message) {
         super(message);

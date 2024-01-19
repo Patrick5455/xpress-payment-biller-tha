@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class RestExceptionHandler {
 
     @ExceptionHandler(value = {AppException.class})
-    public ResponseEntity<?> handleAllExceptions(AppException ex) {
+    public ResponseEntity<ApiResponse> handleAllExceptions(AppException ex) {
         return ResponseEntity.badRequest().body(
                 ApiResponse.builder()
                         .code(ex.getCode().getCode())
@@ -35,7 +35,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    public ResponseEntity<?> handleInvalidMethodArgument(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiResponse> handleInvalidMethodArgument(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
                     .getFieldErrors()
                     .stream()
@@ -44,7 +44,7 @@ public class RestExceptionHandler {
         return  ResponseEntity.badRequest().body(
                     ApiResponse.builder()
                             .message(errors.toString())
-                            .code(HttpStatusCode._400.getCode())
+                            .code(HttpStatusCode.STATUS_400.getCode())
                             .success(false)
                             .build()
             );
@@ -53,36 +53,36 @@ public class RestExceptionHandler {
 
 
     @ExceptionHandler(value = {HttpMessageNotReadableException.class})
-    public ResponseEntity<?> handleIHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+    public ResponseEntity<ApiResponse> handleIHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         log.error("HttpMessageNotReadableException:",ex);
         return  ResponseEntity.badRequest().body(
                 ApiResponse.builder()
                         .message("invalid request: please check your request")
-                        .code(HttpStatusCode._400.getCode())
+                        .code(HttpStatusCode.STATUS_400.getCode())
                         .success(false)
                         .build()
         );
     }
 
     @ExceptionHandler(value = {InvalidTokenException.class})
-    public ResponseEntity<?> handleInvalidTokenException(InvalidTokenException ex) {
+    public ResponseEntity<ApiResponse> handleInvalidTokenException(InvalidTokenException ex) {
         log.error("InvalidTokenException:",ex);
         return  ResponseEntity.badRequest().body(
                 ApiResponse.builder()
                         .message("you've been logged out, please login again to continue ")
-                        .code(HttpStatusCode._400.getCode())
+                        .code(HttpStatusCode.STATUS_400.getCode())
                         .success(false)
                         .build()
         );
     }
 
     @ExceptionHandler(value = {AuthenticationException.class})
-    public ResponseEntity<?> handleAuthenticationException(AuthenticationException ex) {
+    public ResponseEntity<ApiResponse> handleAuthenticationException(AuthenticationException ex) {
         log.error("AuthenticationException:",ex);
         return  ResponseEntity.badRequest().body(
                 ApiResponse.builder()
                         .message("you've been logged out, please login again to continue:")
-                        .code(HttpStatusCode._400.getCode())
+                        .code(HttpStatusCode.STATUS_400.getCode())
                         .success(false)
                         .build()
         );
@@ -90,19 +90,19 @@ public class RestExceptionHandler {
 
 
     @ExceptionHandler(value = {ValidationException.class})
-    public ResponseEntity<?> handleValidationExceptionException(ValidationException ex) {
+    public ResponseEntity<ApiResponse> handleValidationExceptionException(ValidationException ex) {
         log.error("ValidationException:",ex);
         return  ResponseEntity.badRequest().body(
                 ApiResponse.builder()
                         .message("invalid request, please check your request")
-                        .code(HttpStatusCode._400.getCode())
+                        .code(HttpStatusCode.STATUS_400.getCode())
                         .success(false)
                         .build()
         );
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
-    public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException ex) {
+    public ResponseEntity<ApiResponse> handleConstraintViolationException(ConstraintViolationException ex) {
         log.error("ConstraintViolationException:",ex);
         return  ResponseEntity.badRequest().body(
                 ApiResponse.builder()
@@ -110,7 +110,7 @@ public class RestExceptionHandler {
                                 ex.getConstraintViolations().stream().map(
                                                 ConstraintViolation::getMessage)
                                         .toList().get(0))
-                        .code(HttpStatusCode._400.getCode())
+                        .code(HttpStatusCode.STATUS_400.getCode())
                         .success(false)
                         .build()
         );
@@ -118,12 +118,12 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(value
             = {UsernameNotFoundException.class})
-    public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+    public ResponseEntity<ApiResponse> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         log.error("UsernameNotFoundException:",ex);
         return  ResponseEntity.badRequest().body(
                 ApiResponse.builder()
                         .message("Oops!, please sign up to continue")
-                        .code(HttpStatusCode._400.getCode())
+                        .code(HttpStatusCode.STATUS_400.getCode())
                         .success(false)
                         .build()
         );

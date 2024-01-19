@@ -5,7 +5,7 @@ package com.xpresspayment.takehometest.security.services;
 
 import com.xpresspayment.takehometest.common.dto.account.UserDto;
 import com.xpresspayment.takehometest.common.exceptions.InvalidTokenException;
-import com.xpresspayment.takehometest.common.utils.i.CachingService;
+import com.xpresspayment.takehometest.common.utils.i.AbstractCachingService;
 import com.xpresspayment.takehometest.data.UserRepository;
 import com.xpresspayment.takehometest.security.models.UserPrincipal;
 import com.xpresspayment.takehometest.security.services.i.IUserService;
@@ -24,11 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService implements IUserService {
 
     private final UserRepository userDao;
-    private final CachingService<String, Object> redisCaching;
+    private final AbstractCachingService<String, Object> redisCaching;
 
     @Autowired
     public UserService(UserRepository userDao,
-                       @Qualifier("redis") CachingService<String, Object> redisCaching) {
+                       @Qualifier("redis") AbstractCachingService<String, Object> redisCaching) {
         this.userDao = userDao;
         this.redisCaching = redisCaching;
     }

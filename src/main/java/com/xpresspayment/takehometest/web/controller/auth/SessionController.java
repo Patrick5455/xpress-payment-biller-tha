@@ -30,7 +30,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,19 +67,19 @@ public class SessionController extends BaseController {
             }
     )
     @PostMapping(value = "/sign-up", produces = {})
-    public ResponseEntity<?> signupUser(
+    public ResponseEntity<com.xpresspayment.takehometest.common.dto.web.response.ApiResponse> signupUser(
             @RequestBody  @Valid SignUpRequest request) {
-        ResponseEntity<?> responseEntity;
+        ResponseEntity<com.xpresspayment.takehometest.common.dto.web.response.ApiResponse> responseEntity;
         try {
             SignUpResponse response = signupService.registerUser(request);
             responseEntity = ResponseEntity.created(URI.create("")).
                     body(toApiResponse(response, "user successfully signed up",
-                            HttpStatusCode._201.getCode(), true));
+                            HttpStatusCode.STATUS_201.getCode(), true));
         }
         catch (Exception e){
             log.error("an exception occurred while registering user with email {}", request.getEmail(), e);
             responseEntity = ResponseEntity.badRequest().body(
-                    toErrorResponse(e.getMessage(), HttpStatusCode._400.getCode())
+                    toErrorResponse(e.getMessage(), HttpStatusCode.STATUS_400.getCode())
             );
         }
         return responseEntity;
@@ -102,7 +101,7 @@ public class SessionController extends BaseController {
             }
     )
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(
+    public ResponseEntity<com.xpresspayment.takehometest.common.dto.web.response.ApiResponse> loginUser(
             @RequestBody @Valid LoginRequest request)
             throws InvalidCredentialException {
         try {
@@ -112,12 +111,12 @@ public class SessionController extends BaseController {
                     toApiResponse(getLoginResponse(
                                     request.getUsername()),
                             "user logged in successfully",
-                            HttpStatusCode._200.getCode(), true));
+                            HttpStatusCode.STATUS_200.getCode(), true));
         }
         catch (Exception e) {
             log.error("an error occurred during login attempt", e);
             return   ResponseEntity.badRequest().
-                    body(toErrorResponse(e.getMessage(), HttpStatusCode._400.getCode()));
+                    body(toErrorResponse(e.getMessage(), HttpStatusCode.STATUS_400.getCode()));
         }
     }
 
@@ -138,18 +137,18 @@ public class SessionController extends BaseController {
             }
     )
     @GetMapping()
-    public ResponseEntity<?> getUserSessionDetails()
+    public ResponseEntity<com.xpresspayment.takehometest.common.dto.web.response.ApiResponse> getUserSessionDetails()
             throws InvalidCredentialException {
         try {
             return ResponseEntity.ok(
                     toApiResponse(getAccountInfo(userService.getLoggedInUser().getEmail()),
                             "user session details fetched successfully",
-                            HttpStatusCode._200.getCode(), true));
+                            HttpStatusCode.STATUS_200.getCode(), true));
         }
         catch (Exception e) {
             log.error("an error occurred during login attempt", e);
             return   ResponseEntity.badRequest().
-                    body(toErrorResponse(e.getMessage(), HttpStatusCode._400.getCode()));
+                    body(toErrorResponse(e.getMessage(), HttpStatusCode.STATUS_400.getCode()));
         }
     }
 
@@ -169,7 +168,7 @@ public class SessionController extends BaseController {
             }
     )
     @GetMapping("/logout")
-    public  ResponseEntity<?> logout (HttpServletRequest request, HttpServletResponse response){
+    public  ResponseEntity<com.xpresspayment.takehometest.common.dto.web.response.ApiResponse> logout (HttpServletRequest request, HttpServletResponse response){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response , authentication);
@@ -178,7 +177,7 @@ public class SessionController extends BaseController {
         }
         return ResponseEntity.ok(
                 toApiResponse(null, "user logged out successfully",
-                        HttpStatusCode._200.getCode(), true));
+                        HttpStatusCode.STATUS_200.getCode(), true));
     }
 
 
@@ -188,6 +187,7 @@ public class SessionController extends BaseController {
     }
 
     private LoginResponse getLoginResponse(String username) {
+        log.info("getting login response for user with username: {}", username);
         UserDto userDto = userService.loadUserDtoByUsername(username);
         UserPrincipal userPrincipal = UserPrincipal.createUser(userDto);
         return toLoginResponse(userDto.isActive() ?

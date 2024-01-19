@@ -7,7 +7,7 @@ import com.xpresspayment.takehometest.common.enumconstants.HttpStatusCode;
 public class InvalidOtpException extends AppException {
 
     public InvalidOtpException(String message) {
-        super(message, HttpStatusCode._400);
+        super(message, HttpStatusCode.STATUS_400);
     }
 
     public InvalidOtpException(String message, Throwable cause){

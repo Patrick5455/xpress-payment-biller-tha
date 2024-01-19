@@ -7,8 +7,7 @@ public class AppException extends RuntimeException {
 
 
     @Getter
-    private HttpStatusCode code;
-    // It cannot become final hence the NOSONAR
+    private  HttpStatusCode code; //NOSONAR
     private transient Object[] args;  //NOSONAR
 
     public AppException() {

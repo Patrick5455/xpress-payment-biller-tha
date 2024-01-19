@@ -32,7 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @Sql(scripts = {"classpath:sql/test-data.sql", "classpath:sql/test-schema.sql"})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Import({IntegratedTestConfigs.class})
-public class AbstractTest {
+public abstract class AbstractTest {
 
     @Autowired
     protected MockMvc mockMvc;
@@ -43,10 +43,6 @@ public class AbstractTest {
     protected static UserEntity userEntity1;
     protected static UserEntity userEntity2;
 
-    @Test
-    public void testDefault() {
-        log.info("test");
-    }
 
 
 

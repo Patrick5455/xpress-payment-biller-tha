@@ -45,18 +45,18 @@ public class BillerController extends BaseController {
             }
     )
     @PostMapping(value = "/airtime", produces = {})
-    public ResponseEntity<?> purchaseAirtime(@Valid  @RequestBody PurchaseAirtime request) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<com.xpresspayment.takehometest.common.dto.web.response.ApiResponse> purchaseAirtime(@Valid  @RequestBody PurchaseAirtime request) {
+        ResponseEntity<com.xpresspayment.takehometest.common.dto.web.response.ApiResponse> responseEntity;
         try {
             AirtimeResponse response = airtimeVtuClient.purchaseAirtime(request, GlobalUtils.generateUuid());
             responseEntity = ResponseEntity.created(URI.create("")).
                     body(toApiResponse(response, "user successfully purchased airtime",
-                            HttpStatusCode._200.getCode(), true));
+                            HttpStatusCode.STATUS_200.getCode(), true));
         }
         catch (AppException e){
             log.error("an exception occurred while purchasing airtime", e);
             responseEntity = ResponseEntity.badRequest().body(
-                    toErrorResponse(e.getMessage(), HttpStatusCode._500.getCode())
+                    toErrorResponse(e.getMessage(), HttpStatusCode.STATUS_500.getCode())
             );
         }
         return responseEntity;

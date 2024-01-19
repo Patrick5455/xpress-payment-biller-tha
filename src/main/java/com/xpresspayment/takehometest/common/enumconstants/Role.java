@@ -1,6 +1,7 @@
 
 package com.xpresspayment.takehometest.common.enumconstants;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public enum Role {
@@ -48,7 +49,7 @@ public enum Role {
         ORDINARY_USER_ACCESS {
             @Override
             List<AuthorityPrivileges> getPrivileges() {
-                return null;
+                return Collections.emptyList();
             }
         };
 
@@ -61,7 +62,7 @@ public enum Role {
      * Privileges for authorities
      */
     public enum AuthorityPrivileges {
-        //TODO enumerate all the privileges an auth can have
+        //enumerate all the privileges an auth can have
     }
 
 

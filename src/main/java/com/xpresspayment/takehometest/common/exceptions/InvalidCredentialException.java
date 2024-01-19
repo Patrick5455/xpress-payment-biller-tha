@@ -8,6 +8,6 @@ import com.xpresspayment.takehometest.common.enumconstants.HttpStatusCode;
 public class InvalidCredentialException  extends AppException{
 
     public InvalidCredentialException (String message) {
-        super(message, HttpStatusCode._400);
+        super(message, HttpStatusCode.STATUS_400);
     }
 }

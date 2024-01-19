@@ -4,7 +4,7 @@ package com.xpresspayment.takehometest.common.utils.impl;
 
 import com.google.gson.Gson;
 import com.xpresspayment.takehometest.common.exceptions.AppException;
-import com.xpresspayment.takehometest.common.utils.i.CachingService;
+import com.xpresspayment.takehometest.common.utils.i.AbstractCachingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -16,11 +16,11 @@ import redis.clients.jedis.JedisPool;
 @Qualifier(value = "redis")
 @Primary
 @Component
-public class RedisCacheService extends CachingService<String, Object> {
+public class RedisCacheServiceAbstract extends AbstractCachingService<String, Object> {
 
     private final JedisPool jedisPool;
 
-    public RedisCacheService(JedisPool jedisPool){
+    public RedisCacheServiceAbstract(JedisPool jedisPool){
         this.jedisPool = jedisPool;
     }
 
@@ -51,11 +51,6 @@ public class RedisCacheService extends CachingService<String, Object> {
 
     @Override
     public void remove(String key) {removeValue(key);}
-
-    @Override
-    public long expireKey (String key, int seconds) {
-        return expire(key, seconds);
-    }
 
     @Override
     public boolean contains(String key) {

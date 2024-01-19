@@ -4,14 +4,15 @@ package com.xpresspayment.takehometest.common.dto.auth.request;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import com.xpresspayment.takehometest.common.annotations.constraints.ValidPassword;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.With;
 
 
 @Data @With @NoArgsConstructor @AllArgsConstructor
+@Builder
 public class LoginRequest {
 
     @Email(message = "must be a valid email")

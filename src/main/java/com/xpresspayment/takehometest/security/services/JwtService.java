@@ -10,7 +10,7 @@ import java.util.function.Function;
 
 import com.xpresspayment.takehometest.common.exceptions.InvalidTokenException;
 import com.xpresspayment.takehometest.common.utils.GlobalUtils;
-import com.xpresspayment.takehometest.common.utils.i.CachingService;
+import com.xpresspayment.takehometest.common.utils.i.AbstractCachingService;
 import com.xpresspayment.takehometest.security.constants.SecurityConstants;
 import com.xpresspayment.takehometest.security.models.AuthOwnerDetails;
 import com.xpresspayment.takehometest.security.models.UserPrincipal;
@@ -27,9 +27,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtService extends SecurityConstants implements AuthenticationService {
 
-    private final CachingService<String, Object> redisCaching;
+    private final AbstractCachingService<String, Object> redisCaching;
 
-    public JwtService(@Qualifier("redis") CachingService<String, Object> redisCaching) {
+    public JwtService(@Qualifier("redis") AbstractCachingService<String, Object> redisCaching) {
         this.redisCaching = redisCaching;
     }
 
@@ -60,7 +60,7 @@ public class JwtService extends SecurityConstants implements AuthenticationServi
     @Override
     public void invalidateAuthenticationToken(String authToken) {
         Claims claims = extractAllClaims(authToken);
-        claims.setExpiration(toDate(LocalDateTime.now()));
+        claims.setExpiration(toDate());
         redisCaching.remove(getClaim(authToken, Claims::getId));
         redisCaching.remove(claims.getSubject());
     }
@@ -95,7 +95,7 @@ public class JwtService extends SecurityConstants implements AuthenticationServi
     private static Claims extractAllClaims (String token) throws InvalidTokenException {
 
         try {
-          return   Jwts.parser().setSigningKey(SECRET)
+          return  Jwts.parser().setSigningKey(SECRET)
                     .parseClaimsJws(token).getBody();
         }
         catch (Exception e) {
@@ -113,7 +113,7 @@ public class JwtService extends SecurityConstants implements AuthenticationServi
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
-    private static Date toDate(LocalDateTime date) {
+    private static Date toDate() {
         return Date.from(Timestamp.valueOf(LocalDateTime.now()).toInstant());
     }
 

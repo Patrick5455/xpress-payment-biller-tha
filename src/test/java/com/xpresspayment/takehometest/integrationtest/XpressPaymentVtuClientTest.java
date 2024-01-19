@@ -48,7 +48,7 @@ class XpressPaymentVtuClientTest extends AbstractTest {
                 .publicKey("publicKey")
                 .build();
         httpClientUtil = mock(HttpClientUtil.class);
-        xpressPaymentVtuClient = new XpressPaymentVtuClient(xpressPayBillerBaseUrl, airtimeVtuClientProperties, httpClientUtil);
+        xpressPaymentVtuClient = new XpressPaymentVtuClient(airtimeVtuClientProperties, httpClientUtil, xpressPayBillerBaseUrl);
 
 
         AirtimeProductCategoryResponse response = AirtimeProductCategoryResponse.builder()
